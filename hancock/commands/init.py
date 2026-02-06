@@ -60,7 +60,7 @@ def run_init():
         console.print("  5. Download the JSON key file\n")
 
         console.print("[muted]For detailed instructions, see:[/muted]")
-        console.print("[muted]https://github.com/HappyPayton/hancock-cli#setup[/muted]\n")
+        console.print("[muted]https://github.com/HappyPayton/hancock-cli#-service-account-setup[/muted]\n")
 
         console.print("[green]✨ Pro tip:[/green] [cyan]If you're using Claude Code, Claude can help you\nthrough the Google Cloud setup![/cyan]\n")
 
