@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hancock - Gmail Signature Deployment CLI</title>
+    <meta name="description" content="Deploy Gmail signatures to your entire Google Workspace from the terminal. Simple, fast, and secure.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+            background: #0a0e14;
+            color: #00d9ff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #8b949e;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #00d9ff;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Terminal Box */
+        .terminal {
+            background: #1a1f2e;
+            border: 2px solid #00d9ff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 3rem 0;
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.2);
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .terminal::before {
+            content: "● ● ●";
+            position: absolute;
+            top: -35px;
+            left: 15px;
+            color: #8b949e;
+            font-size: 1.5rem;
+            letter-spacing: 8px;
+        }
+
+        .terminal-header {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .command {
+            color: #00d9ff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 1.5rem 0;
+            user-select: all;
+            cursor: text;
+            display: flex;
+            align-items: center;
+        }
+
+        .command::before {
+            content: "$ ";
+            color: #8b949e;
+            margin-right: 0.5rem;
+        }
+
+        .command:hover {
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .feature {
+            background: #1a1f2e;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            border-color: #00d9ff;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            color: #00d9ff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        /* Steps */
+        .steps {
+            margin: 4rem 0;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .steps-title {
+            font-size: 2rem;
+            color: #00d9ff;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+
+        .step {
+            background: #1a1f2e;
+            border-left: 4px solid #00d9ff;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-number {
+            color: #00d9ff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-title {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            color: #8b949e;
+            font-size: 0.95rem;
+        }
+
+        .code-inline {
+            background: #0a0e14;
+            color: #00d9ff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            margin: 4rem 0;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 2px solid #00d9ff;
+            border-radius: 8px;
+            color: #00d9ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .btn:hover {
+            background: #00d9ff;
+            color: #0a0e14;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border-color: #8b949e;
+            color: #8b949e;
+        }
+
+        .btn-secondary:hover {
+            background: #8b949e;
+            color: #0a0e14;
+            box-shadow: 0 0 20px rgba(139, 148, 158, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+            border-top: 1px solid #30363d;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .command {
+                font-size: 1rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Copy feedback */
+        .copy-feedback {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #00d9ff;
+            color: #0a0e14;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .copy-feedback.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">HANCOCK</div>
+            <div class="tagline">Gmail Signature Deployment CLI</div>
+            <div class="subtitle">Deploy signatures to your entire Google Workspace from the terminal</div>
+        </header>
+
+        <div class="terminal">
+            <div class="terminal-header"># Install Hancock</div>
+            <div class="command" onclick="copyToClipboard(this.textContent)">pip install hancock-cli</div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-title">Simple Setup</div>
+                <div class="feature-desc">One command to configure, works with Google service accounts</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Smart Matching</div>
+                <div class="feature-desc">Automatically matches signature files to users by name or email</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <div class="feature-title">Validation</div>
+                <div class="feature-desc">Checks file sizes, formats, and matching before deployment</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Secure</div>
+                <div class="feature-desc">Your credentials stay on your machine, no data sent elsewhere</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Fast</div>
+                <div class="feature-desc">Deploy to entire organization in minutes with progress tracking</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">💻</div>
+                <div class="feature-title">Terminal Native</div>
+                <div class="feature-desc">Works great standalone or with Claude Code for guided setup</div>
+            </div>
+        </div>
+
+        <div class="steps">
+            <div class="steps-title">Get Started in 3 Steps</div>
+
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-title">Install</div>
+                <div class="step-desc">
+                    <span class="code-inline">pip install hancock-cli</span>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-title">Setup (5-15 minutes, one time)</div>
+                <div class="step-desc">
+                    Run <span class="code-inline">hancock init</span> to configure your Google Workspace credentials
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-title">Deploy</div>
+                <div class="step-desc">
+                    Create signature HTML files and run <span class="code-inline">hancock deploy signatures/</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h2 style="color: #00d9ff; margin-bottom: 1rem;">✨ Pro Tip</h2>
+            <p style="color: #8b949e; font-size: 1.1rem; margin-bottom: 2rem;">
+                Run Hancock in Claude Code terminal for guided setup help!
+            </p>
+
+            <div class="cta-buttons">
+                <a href="https://github.com/yourusername/hancock-cli" class="btn" target="_blank">View on GitHub</a>
+                <a href="https://github.com/yourusername/hancock-cli#readme" class="btn btn-secondary" target="_blank">Documentation</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ for Google Workspace administrators</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://github.com/yourusername/hancock-cli/issues">Report an Issue</a> •
+            <a href="https://github.com/yourusername/hancock-cli/blob/main/LICENSE">MIT License</a>
+        </p>
+    </footer>
+
+    <div class="copy-feedback" id="copyFeedback">✓ Copied to clipboard!</div>
+
+    <script>
+        function copyToClipboard(text) {
+            // Remove the $ prompt if present
+            text = text.trim().replace(/^\$\s*/, '');
+
+            navigator.clipboard.writeText(text).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // Add click listener to all commands
+        document.querySelectorAll('.command').forEach(cmd => {
+            cmd.style.cursor = 'pointer';
+            cmd.title = 'Click to copy';
+        });
+    </script>
+</body>
+</html>

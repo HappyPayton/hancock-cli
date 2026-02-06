@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hancock-cli"
+version = "1.0.0"
+description = "Gmail signature deployment CLI for Google Workspace"
+readme = "README.md"
+authors = [{name = "Hancock Contributors"}]
+license = {text = "MIT"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications :: Email",
+    "Topic :: System :: Systems Administration",
+]
+keywords = ["gmail", "google-workspace", "email-signature", "deployment", "cli"]
+
+dependencies = [
+    "google-api-python-client>=2.0.0",
+    "google-auth>=2.0.0",
+    "google-auth-oauthlib>=0.4.0",
+    "google-auth-httplib2>=0.1.0",
+    "pyyaml>=5.4.0",
+    "rich>=10.0.0",
+    "click>=8.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/hancock-cli"
+Documentation = "https://github.com/yourusername/hancock-cli#readme"
+Repository = "https://github.com/yourusername/hancock-cli"
+Issues = "https://github.com/yourusername/hancock-cli/issues"
+
+[project.scripts]
+hancock = "hancock.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hancock*"]
+
+[tool.setuptools.package-data]
+hancock = ["py.typed"]
