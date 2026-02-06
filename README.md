@@ -28,9 +28,24 @@ hancock deploy signatures/
 
 ### Install
 
+Choose your operating system:
+
+**macOS:**
+```bash
+python3 -m pip install hancock-cli
+```
+
+**Windows:**
 ```bash
 pip install hancock-cli
 ```
+*If this doesn't work, [install Python](https://www.python.org/downloads/) first and check "Add Python to PATH"*
+
+**Linux:**
+```bash
+pip3 install hancock-cli
+```
+*If `pip3` isn't found, run: `sudo apt install python3-pip` (Ubuntu/Debian) or `sudo yum install python3-pip` (CentOS/RHEL)*
 
 ### Setup (5-15 minutes, one time only)
 
@@ -266,6 +281,12 @@ Just run `hancock init` in the Claude Code terminal and Claude will guide you th
 
 ### From PyPI (recommended)
 
+**macOS / Linux:**
+```bash
+python3 -m pip install hancock-cli
+```
+
+**Windows:**
 ```bash
 pip install hancock-cli
 ```
@@ -275,14 +296,22 @@ pip install hancock-cli
 ```bash
 git clone https://github.com/HappyPayton/hancock-cli.git
 cd hancock-cli
-pip install -e .
+python3 -m pip install -e .
 ```
 
 ### Requirements
 
-- Python 3.7 or higher
-- Google Workspace admin access
-- Google Cloud service account with domain-wide delegation
+- **Python 3.7 or higher** - [Download Python](https://www.python.org/downloads/) if not installed
+- **Google Workspace admin access**
+- **Google Cloud service account** with domain-wide delegation
+
+### Troubleshooting Installation
+
+**"pip: command not found" or "pip3: command not found"**
+- Use `python3 -m pip install hancock-cli` instead
+- On Mac: Python 3 is pre-installed, use `python3` and `pip3`
+- On Windows: Install Python from python.org and check "Add to PATH"
+- On Linux: Run `sudo apt install python3-pip` (Ubuntu/Debian)
 
 ---
 
