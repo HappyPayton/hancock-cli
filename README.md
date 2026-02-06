@@ -273,7 +273,7 @@ pip install hancock-cli
 ### From source
 
 ```bash
-git clone https://github.com/yourusername/hancock-cli.git
+git clone https://github.com/HappyPayton/hancock-cli.git
 cd hancock-cli
 pip install -e .
 ```
@@ -328,7 +328,7 @@ pip install hancock-cli
 hancock init
 ```
 
-**Questions?** File an issue on [GitHub](https://github.com/yourusername/hancock-cli/issues)
+**Questions?** File an issue on [GitHub](https://github.com/HappyPayton/hancock-cli/issues)
 
 ---
 

@@ -14,7 +14,7 @@ Thank you for your interest in contributing to Hancock! 🎉
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/hancock-cli.git
+   git clone https://github.com/HappyPayton/hancock-cli.git
    cd hancock-cli
    ```
 
@@ -165,8 +165,8 @@ def yourcommand(arg1):
 ## Getting Help
 
 - **Documentation:** [README.md](README.md)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/hancock-cli/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/hancock-cli/discussions)
+- **Issues:** [GitHub Issues](https://github.com/HappyPayton/hancock-cli/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/HappyPayton/hancock-cli/discussions)
 
 ## Code of Conduct
 

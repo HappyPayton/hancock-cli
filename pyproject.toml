@@ -43,10 +43,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/hancock-cli"
-Documentation = "https://github.com/yourusername/hancock-cli#readme"
-Repository = "https://github.com/yourusername/hancock-cli"
-Issues = "https://github.com/yourusername/hancock-cli/issues"
+Homepage = "https://github.com/HappyPayton/hancock-cli"
+Documentation = "https://github.com/HappyPayton/hancock-cli#readme"
+Repository = "https://github.com/HappyPayton/hancock-cli"
+Issues = "https://github.com/HappyPayton/hancock-cli/issues"
 
 [project.scripts]
 hancock = "hancock.cli:main"
