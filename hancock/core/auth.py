@@ -13,7 +13,7 @@ SCOPES = [
 ]
 
 
-def authenticate(service_account_file: str, admin_email: str) -> Tuple[object, None]:
+def authenticate(service_account_file: str, admin_email: str) -> Tuple[object, str]:
     """
     Authenticate with Google Workspace using Service Account with Domain-Wide Delegation.
 
@@ -22,7 +22,7 @@ def authenticate(service_account_file: str, admin_email: str) -> Tuple[object, N
         admin_email: Admin email for domain-wide delegation
 
     Returns:
-        Tuple of (credentials, None) for service account auth
+        Tuple of (base_credentials, admin_email) - credentials WITHOUT impersonation yet
 
     Raises:
         FileNotFoundError: If service account file doesn't exist
@@ -42,27 +42,32 @@ def authenticate(service_account_file: str, admin_email: str) -> Tuple[object, N
             scopes=SCOPES
         )
 
-        # Create delegated credentials for domain-wide access
-        delegated_credentials = credentials.with_subject(admin_email)
-
-        return delegated_credentials, None
+        # Return base credentials (no impersonation yet) and admin_email
+        return credentials, admin_email
     except Exception as e:
         raise ValueError(f"Failed to load credentials: {str(e)}")
 
 
-def get_service(api_name: str, api_version: str, credentials) -> object:
+def get_service(api_name: str, api_version: str, credentials, user_email: Optional[str] = None) -> object:
     """
     Build and return a Google API service client.
 
     Args:
         api_name: Name of the API (e.g., 'admin', 'gmail')
         api_version: API version (e.g., 'directory_v1', 'v1')
-        credentials: Authenticated credentials
+        credentials: Base service account credentials
+        user_email: Optional email to impersonate (for domain-wide delegation)
 
     Returns:
         API service client
     """
-    return build(api_name, api_version, credentials=credentials, cache_discovery=False)
+    if user_email:
+        # Impersonate the specified user
+        delegated_credentials = credentials.with_subject(user_email)
+        return build(api_name, api_version, credentials=delegated_credentials, cache_discovery=False)
+    else:
+        # Use credentials without impersonation
+        return build(api_name, api_version, credentials=credentials, cache_discovery=False)
 
 
 def validate_credentials(service_account_file: str, admin_email: str) -> Tuple[bool, Optional[str], Optional[str]]:
@@ -77,10 +82,11 @@ def validate_credentials(service_account_file: str, admin_email: str) -> Tuple[b
         Tuple of (is_valid, domain, error_message)
     """
     try:
-        credentials, _ = authenticate(service_account_file, admin_email)
+        credentials, returned_admin_email = authenticate(service_account_file, admin_email)
 
         # Try to make a simple API call to verify credentials work
-        service = get_service('admin', 'directory_v1', credentials)
+        # Use admin_email for Admin SDK access
+        service = get_service('admin', 'directory_v1', credentials, user_email=returned_admin_email)
 
         # Extract domain from admin email
         domain = admin_email.split('@')[1] if '@' in admin_email else None

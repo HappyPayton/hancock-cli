@@ -59,13 +59,13 @@ def run_deploy(folder_path: str, dry_run: bool = False):
         with create_spinner() as progress:
             task = progress.add_task("Connecting to Google Workspace...", total=None)
 
-            credentials, _ = authenticate(
+            credentials, admin_email = authenticate(
                 config.get('service_account_file'),
                 config.get('admin_email')
             )
 
-            directory_service = get_service('admin', 'directory_v1', credentials)
-            gmail_service = get_service('gmail', 'v1', credentials)
+            # Use admin_email for directory access
+            directory_service = get_service('admin', 'directory_v1', credentials, user_email=admin_email)
 
         print_success("Connected to Google Workspace")
         console.print()
@@ -175,7 +175,7 @@ def run_deploy(folder_path: str, dry_run: bool = False):
             progress.update(task, advance=1)
 
         success_count, failed_count, errors_list = deploy_signatures_batch(
-            gmail_service,
+            credentials,
             signatures_dict,
             progress_callback=progress_callback
         )

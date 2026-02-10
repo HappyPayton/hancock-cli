@@ -35,12 +35,13 @@ def run_preview(email: str):
         with create_spinner() as progress:
             task = progress.add_task("Connecting to Google Workspace...", total=None)
 
-            credentials, _ = authenticate(
+            credentials, admin_email = authenticate(
                 config.get('service_account_file'),
                 config.get('admin_email')
             )
 
-            gmail_service = get_service('gmail', 'v1', credentials)
+            # Create Gmail service impersonating the target user
+            gmail_service = get_service('gmail', 'v1', credentials, user_email=email)
 
         console.print()
 

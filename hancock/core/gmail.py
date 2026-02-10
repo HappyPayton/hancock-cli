@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Tuple, Optional, Callable
 from googleapiclient.errors import HttpError
+from .auth import get_service
 import time
 
 
@@ -76,7 +77,7 @@ def get_current_signature(service, user_email: str) -> Tuple[bool, Optional[str]
 
 
 def deploy_signatures_batch(
-    service,
+    credentials,
     signatures: Dict[str, str],
     retry_attempts: int = 3,
     retry_delay: int = 2,
@@ -86,7 +87,7 @@ def deploy_signatures_batch(
     Deploy signatures to multiple users with retry logic.
 
     Args:
-        service: Authenticated Gmail API service
+        credentials: Base service account credentials (will impersonate each user)
         signatures: Dictionary mapping email -> signature HTML
         retry_attempts: Number of retry attempts on failure
         retry_delay: Delay between retries (seconds)
@@ -105,7 +106,9 @@ def deploy_signatures_batch(
         error_msg = None
 
         for attempt in range(retry_attempts):
-            success, error_msg = deploy_signature(service, user_email, signature_html)
+            # Create a Gmail service impersonating this specific user
+            user_service = get_service('gmail', 'v1', credentials, user_email=user_email)
+            success, error_msg = deploy_signature(user_service, user_email, signature_html)
             if success:
                 break
             if attempt < retry_attempts - 1:
